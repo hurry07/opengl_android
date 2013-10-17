@@ -11,6 +11,7 @@
 #include "../core/ClassWrap.h"
 #include "../core/Module.h"
 #include "../core/v8Utils.h"
+#include "../classes/file.h"
 
 #include "../modules/modules.h"
 #include "../modules/CCImage.h"
@@ -19,12 +20,10 @@
 
 #include <string>
 #include "../gl_include.h"
-
 #include <glm/gtc/type_ptr.hpp>
 
 using namespace node;
 bool Application::debug = false;
-//char* Application::source_root = 0;// TODO
 
 Isolate* node_isolate = NULL;
 
@@ -43,10 +42,6 @@ Context::Scope context_scope(context)
 #define SAFE_DISPOSE(p) p.Dispose()
 
 Application::Application() {
-//    const char typed_arrays_flag[] = "--harmony_typed_arrays";
-//    V8::SetFlagsFromString(typed_arrays_flag, sizeof(typed_arrays_flag) - 1);
-//    V8::SetArrayBufferAllocator(&ArrayBufferAllocator::the_singleton);
-    
     mWidth = 0;
     mHeight = 0;
 

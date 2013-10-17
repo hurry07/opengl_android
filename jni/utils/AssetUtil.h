@@ -9,9 +9,9 @@
 #define ASSETUTIL_H_
 
 #include <v8.h>
-#include "../classes/file.h"
 
 class JSFile;
+class AAssetManager;
 
 class AssetUtil {
 public:
@@ -22,6 +22,10 @@ public:
      * load asset to file
      */
 	static void load(JSFile* file, const char* path);
+	static FILE* android_fopen(const char* fname, const char* mode);
+
+public:
+	static AAssetManager* mgr;
 };
 
 #endif /* ASSETUTIL_H_ */

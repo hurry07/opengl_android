@@ -36,7 +36,6 @@ public:
     void onDrawFrame();
     void evalScript(const char* sprite);
 
-//    static char* source_root;
     static bool debug;
 
     void appendMouseTouch(int button, int state, int x, int y);

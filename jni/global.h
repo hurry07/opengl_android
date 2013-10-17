@@ -9,14 +9,17 @@
 #ifndef v8_global_h
 #define v8_global_h
 
+#include <android/log.h>
 #include <string>
 #include <v8.h>
 
 //extern std::string source_root;
 
-#define  LOGD(...)  printf(__VA_ARGS__);printf("\n")
-#define  LOGI(...)  printf(__VA_ARGS__);printf("\n")
-#define  LOGE(...)  printf(__VA_ARGS__);printf("\n")
+#define LOGV(...)  __android_log_print(ANDROID_LOG_VERBOSE, "opengl_js", __VA_ARGS__)
+#define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG, "opengl_js", __VA_ARGS__)
+#define LOGI(...)  __android_log_print(ANDROID_LOG_INFO, "opengl_js", __VA_ARGS__)
+#define LOGW(...)  __android_log_print(ANDROID_LOG_WARN, "opengl_js", __VA_ARGS__)
+#define LOGE(...)  __android_log_print(ANDROID_LOG_ERROR, "opengl_js", __VA_ARGS__)
 
 #define NS_NODE_BEGIN namespace node {
 #define NS_NODE_END }

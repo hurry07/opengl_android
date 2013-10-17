@@ -17,9 +17,11 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE    := libgl2jni
+#LOCAL_CFLAGS    := -Wno-psabi
 LOCAL_CFLAGS    := -Werror -Wno-psabi
 LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -lc -lz
-LOCAL_SRC_FILES := app/Application.cpp \
+LOCAL_SRC_FILES := main.cpp \
+	app/Application.cpp \
 	autorelease/ReleaseImpl.cpp \
 	classes/AutoRelease.cpp \
 	classes/file.cpp \
@@ -43,10 +45,8 @@ LOCAL_SRC_FILES := app/Application.cpp \
 	modules/Image.cpp \
 	typedbuffer/arraybuffer.cpp \
 	typedbuffer/arraybufferview.cpp \
-	utils/Arguments.cpp \
-	utils/AssetUtil.cpp \
+	utils/AssetUtil.cpp 
 
-#LOCAL_SHARED_LIBRARIES := js_shared_prebuilt
 LOCAL_SHARED_LIBRARIES := cocos_jpeg_static
 LOCAL_SHARED_LIBRARIES += cocos_libpng_static
 #LOCAL_SHARED_LIBRARIES += cocos_libwebp_static
@@ -54,7 +54,6 @@ LOCAL_SHARED_LIBRARIES += cocos_curl_static
 LOCAL_SHARED_LIBRARIES += libft2
 LOCAL_SHARED_LIBRARIES += libfreetype_gl
 
-#LOCAL_STATIC_LIBRARIES := v8_static
 LOCAL_STATIC_LIBRARIES := v8android
 LOCAL_STATIC_LIBRARIES += ejecta_libpng_static
 LOCAL_STATIC_LIBRARIES += glm
