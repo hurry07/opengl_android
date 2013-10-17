@@ -1,10 +1,18 @@
+console.log('init global--0a');
 var _gl = require('opengl');
+console.log('init global--0b');
 var _textures = require('framework/texture.js');
+console.log('init global--0d');
 var _program = require('framework/programs.js');
+console.log('init global--0d');
 var _Context = require('render/drawcontext.js');
+console.log('init global--0b');
 var _Camera = require('render/camera.js');
+console.log('init global--0c');
 var _UpdateContext = require('render/updatecontext.js');
+console.log('init global--0d');
 var _TouchContext = require('render/eventcontext.js');
+console.log('init global--0e');
 
 var _Sprite = require('drawable/spritenode.js');
 var _9Patch = require('drawable/ninepatch.js');
@@ -59,23 +67,43 @@ exports.scheduleTask = function (fn, bind) {
     mTasks.push(new Task(fn, bind));
 }
 
-var _Font = require('core/font.js').font;
-var _Atlas = require('core/font.js').atlas;
-var _Text = require('drawable/text.js');
+function FontManager() {
+    var _Font = require('core/font.js').font;
+    var _Atlas = require('core/font.js').atlas;
+    var _Text = require('drawable/text.js');
 
-var mAtlas = new _Atlas(1024, 1024, 1);
-function createFont(path, size) {
-    var f = new _Font(mAtlas, 'fonts/' + path + '.ttf', size);
-    f.load('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~');
-    return f;
-}
+    var mAtlas = new _Atlas(1024, 1024, 1);
+    var mFontsDB = {};
 
-var mFontsDB = {}
-mFontsDB['fat_40'] = createFont('fat', 40);
-mFontsDB['fat_20'] = createFont('fat', 20);
+    function createFont(path, size) {
+        var f = new _Font(this.mAtlas, 'fonts/' + path + '.ttf', size);
+        f.load('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~');
+        return f;
+    }
 
-function findFont(name, size) {
-    return mFontsDB[name + '_' + size] || (  mFontsDB[name + '_' + size] = createFont(name, size));
+    function init() {
+        mFontsDB['fat_40'] = this.createFont('fat', 40);
+        mFontsDB['fat_20'] = this.createFont('fat', 20);
+    }
+
+    function findFont(name, size) {
+        return mFontsDB[name + '_' + size] || (  mFontsDB[name + '_' + size] = createFont(name, size));
+    }
+
+    function textNode(font, size, text) {
+        var pText = new _Text(_program.textBlack.material(mAtlas), findFont(font, size));
+        if (text) {
+            pText.setText(text);
+        }
+        return pText;
+    }
+
+    return {
+        'createFont': createFont,
+        'init': init,
+        'findFont': findFont,
+        'textNode': textNode
+    };
 }
 
 /**
@@ -91,16 +119,11 @@ function spriteNode(id) {
 function colorNode(color, w, h) {
     return new _Color(_program.positionColor.material(color), w, h);
 }
-function textNode(font, size, text) {
-    var pText = new _Text(_program.textBlack.material(mAtlas), findFont(font, size));
-    if (text) {
-        pText.setText(text);
-    }
-    return pText;
-}
+
+exports.__fontMgr = FontManager();
 exports.spriteNode = spriteNode;
 exports.colorNode = colorNode;
-exports.textNode = textNode;
+exports.textNode = exports.__fontMgr.textNode;
 
 function Schedule(namedlist) {
     this._coll = namedlist;
@@ -196,4 +219,7 @@ exports.renderSchedule = function () {
     while (mTasks.length > 0) {
         mTasks.shift().run();
     }
+}
+exports.glReady = function () {
+    exports.__fontMgr.init();
 }

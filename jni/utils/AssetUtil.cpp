@@ -23,6 +23,7 @@ AssetUtil::~AssetUtil() {
 }
 
 void AssetUtil::load(JSFile* tofile, const char* path) {
+	LOGI("====================== %s", path);
     FILE* file = android_fopen(path, "rb");
     if (file == NULL) {
         return;

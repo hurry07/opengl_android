@@ -13,11 +13,9 @@
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
 #include "utils/AssetUtil.h"
-#include <v8.h>
-//#include "app/Application.h"
+#include "app/Application.h"
 
-//Application* app = NULL;
-using namespace v8;
+Application* app = NULL;
 
 // ==========================
 // Life Cycle
@@ -29,29 +27,33 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_initWithAsset
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsCreate
 (JNIEnv * env, jclass activityClass) {
-//    app = new Application();
-//    app->init();
+    LOGI("Java_com_op_activity_JSActivity_jsCreatea");
+    app = new Application();
+    LOGI("Java_com_op_activity_JSActivity_jsCreateb");
+    app->init();
+    LOGI("Java_com_op_activity_JSActivity_jsCreatec");
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsDestory
 (JNIEnv * env, jclass activityClass) {
+    LOGI("Java_com_op_activity_JSActivity_jsDestory");
+    app->destroy();
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_evalScript
 (JNIEnv * env, jclass activityClass, jstring script) {
-	LOGI("Activity %d", 10);
-
-	Isolate* isolate = v8::Isolate::GetCurrent();
-	HandleScope handle_scope(isolate);
-	Local<v8::Context> exec_context = Context::New(isolate);
-	Context::Scope context_scope(exec_context);
-
-	v8::Handle<v8::String> jscode = String::New(env->GetStringChars(script, NULL));
-	Local<Script> comp = Script::Compile(jscode);
-	Local<Value> result = comp->Run();
-	String::Utf8Value retstr(result);
-	LOGI("Activity %s", *retstr);
-
+//	LOGI("Activity %d", 10);
+//
+//	Isolate* isolate = v8::Isolate::GetCurrent();
+//	HandleScope handle_scope(isolate);
+//	Local<v8::Context> exec_context = Context::New(isolate);
+//	Context::Scope context_scope(exec_context);
+//
+//	v8::Handle<v8::String> jscode = String::New(env->GetStringChars(script, NULL));
+//	Local<Script> comp = Script::Compile(jscode);
+//	Local<Value> result = comp->Run();
+//	String::Utf8Value retstr(result);
+//	LOGI("Activity %s", *retstr);
 	LOGI("Activity %d", 20);
 }
 
@@ -61,31 +63,30 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_evalScript
 JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsPause
   (JNIEnv *, jclass) {
 	LOGI("view.pause");
-//	app->pause();
+	app->pause();
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsResume
   (JNIEnv *, jclass) {
 	LOGI("view.resume");
-//	app->resume();
+	app->resume();
 }
 
 // ==========================
 // Render
 // ==========================
+JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceCreated
+  (JNIEnv * env, jobject instance) {
+//	app->onSurfaceCreated(800, 480);
+}
+
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onDrawFrame
   (JNIEnv * env, jobject instance, jobject) {
-//	LOGI("render.draw");
-//    app->onDrawFrame();
+//  app->onDrawFrame();
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceChanged
   (JNIEnv * env, jobject instance, jobject, jint width, jint height) {
 	LOGI("render width:%d height:%d", width, height);
 //	app->onSurfaceChanged(width, height);
-}
-
-JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceCreated
-  (JNIEnv * env, jobject instance) {
-//	app->onSurfaceCreated(800, 480);
 }

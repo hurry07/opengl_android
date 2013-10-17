@@ -41,12 +41,17 @@ public class JSActivity extends Activity {
         mgr = getAssets();
         initWithAsset(mgr);
 
+        System.out.println("JSActivity.onCreate() 0a");
         jsCreate();
-        evalScript("(function() {var a='aabbcc';return a;})()");
-        System.out.println("GL2JNIActivity.onCreate()");
+        System.out.println("JSActivity.onCreate() 0b");
+//        evalScript("(function() {var a='aabbcc';return a;})()");
+//        System.out.println("GL2JNIActivity.onCreate()");
 
+        System.out.println("JSActivity.onCreate() 01");
         mView = new JSSurfaceView(getApplication());
+        System.out.println("JSActivity.onCreate() 02");
         setContentView(mView);
+        System.out.println("JSActivity.onCreate() 03");
     }
 
     @Override

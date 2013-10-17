@@ -134,6 +134,7 @@ var textureDB = {};
 function getPath(id) {
     return root + textures[id];
 }
+console.log('texture.js -03');
 function createFrame(id) {
     var path = getPath(id);
     if (!path) {
@@ -146,10 +147,6 @@ function createFrame(id) {
     var t = _textures.createTexture2D(path);
     return path.frame = new _frame(t);
 }
-
-_textures.createTexture2D('images/upgrade/b_addcoins.png');
-_textures.createTexture2D('images/upgrade/b_addcoins.png');
-_textures.createTexture2D('images/upgrade/b_addcoins.png');
 
 exports.R = R;
 exports.createFrame = createFrame;
