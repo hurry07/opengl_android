@@ -1,5 +1,6 @@
 (function (process) {
     var global = this;
+    var print__ = this.print;
 
     function startup() {
         startup.globalExtend();
@@ -50,15 +51,15 @@
         global.Float32Array = clz.Float32Array;
         global.Float64Array = clz.Float64Array;
     };
-    startup.globalGL = function() {
-        var gl = require('opengl');
-        gl.checkGLError = function(msg) {
-            var err = gl.getError();
-            if(err != 0) {
-                console.log('error found:' + err, msg);
-            };
-        }
-    }
+//    startup.globalGL = function() {
+//        var gl = require('opengl');
+//        gl.checkGLError = function(msg) {
+//            var err = gl.getError();
+//            if(err != 0) {
+//                console.log('error found:' + err, msg);
+//            };
+//        }
+//    }
 
     /**
      * 表示预先定义的 js 模块
@@ -112,10 +113,15 @@
     };
 
     NativeModule.prototype.compile = function () {
-        var fn = process.binding(this.id);
-        this.testname = 'jack';
-        fn.call(this, this.exports, NativeModule.require, this, this.filename);
-        this.loaded = true;
+    	print__('require-->' + this.id);
+    	try {
+	        var fn = process.binding(this.id);
+	        fn.call(this, this.exports, NativeModule.require, this, this.filename);
+	        this.loaded = true;
+    	} catch(e) {
+    		print__('exception:' + e);
+    	}
+        print__('require<--' + this.id);
     };
 
     NativeModule.prototype.cache = function () {

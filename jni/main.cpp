@@ -27,16 +27,11 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_initWithAsset
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsCreate
 (JNIEnv * env, jclass activityClass) {
-    LOGI("Java_com_op_activity_JSActivity_jsCreatea");
     app = new Application();
-    LOGI("Java_com_op_activity_JSActivity_jsCreateb");
-    app->init();
-    LOGI("Java_com_op_activity_JSActivity_jsCreatec");
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsDestory
 (JNIEnv * env, jclass activityClass) {
-    LOGI("Java_com_op_activity_JSActivity_jsDestory");
     app->destroy();
 }
 
@@ -77,7 +72,8 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsResume
 // ==========================
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceCreated
   (JNIEnv * env, jobject instance) {
-//	app->onSurfaceCreated(800, 480);
+    app->init();
+	app->onSurfaceCreated(800, 480);
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onDrawFrame

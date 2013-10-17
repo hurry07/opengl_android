@@ -41,4 +41,4 @@ http://db-in.com/blog/2011/04/cameras-on-opengl-es-2-x/
 http://games.greggman.com/game/webgl-3d-cameras/
 
 adb logcat | /Users/jie/environment/android-ndk-r8d/ndk-stack -sym /Users/jie/svn/opengl_android/obj/local/armeabi
-
+adb logcat | /Users/jie/android-ndk-r8b/ndk-stack -sym /Users/jie/svn/opengl_android/obj/local/armeabi

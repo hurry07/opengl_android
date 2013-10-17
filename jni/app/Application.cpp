@@ -172,41 +172,29 @@ void Application::init() {
 		HANDLE_SCOPE;
 		CONTEXT_SCOPE;
 
-		LOGI("Application::init a");
         // binding test func
 		context->Global()->Set(String::New("print"), FunctionTemplate::New(printf__)->GetFunction());
-
-		LOGI("Application::init b");
 		Handle<Object> process = SetupProcessObject();
 		process_p.Reset(node_isolate, process);
 
-		LOGI("Application::init c");
 		// init with node.js
 		Local<Script> initscript = loadScript("node.js");
 		Local<Value> f_value = initscript->Run();
 		Local<Function> f = Local<Function>::Cast(f_value);
 
-		LOGI("Application::init d");
 		// init global
 		Handle<Value> arg = process;
 		f->Call(context->Global(), 1, &arg);
 
-		LOGI("Application::init e");
-        // bind event
-        Handle<Object> eventExports = eval("require('core/event.js')")->ToObject();
-        touchEvent = new TouchEvent(eventExports->Get(String::New("touchEvent"))->ToObject());
-        keyEvent = new TouchEvent(eventExports->Get(String::New("keyEvent"))->ToObject());
+//        // bind event
+//        Handle<Object> eventExports = eval("require('core/event.js')")->ToObject();
+//        touchEvent = new TouchEvent(eventExports->Get(String::New("touchEvent"))->ToObject());
+//        keyEvent = new TouchEvent(eventExports->Get(String::New("keyEvent"))->ToObject());
 
-		LOGI("Application::init f");
 		// load game module
 		Handle<Value> gameExports = eval("require('game.js')");
-		LOGI("Application::init 1");
 		game = new JSObject(gameExports->ToObject());
-		LOGI("Application::init 2");
 		render = new JSObject(game->getAttribute<Object>("render"));
-
-		LOGI("Application::init 3");
-		LOGI("Application::init 3");
     }
 }
 void Application::destroy() {
@@ -226,7 +214,7 @@ void Application::pause() {
 	CONTEXT_SCOPE;
 
 	LOGI("pause");
-	game->callFunction("pause");
+//	game->callFunction("pause");
 }
 void Application::resume() {
 	ENTER_ISOLATE;
@@ -234,7 +222,7 @@ void Application::resume() {
 	CONTEXT_SCOPE;
 
 	LOGI("resume");
-	game->callFunction("resume");
+//	game->callFunction("resume");
 }
 void Application::gc() {
 	ENTER_ISOLATE;
@@ -255,6 +243,7 @@ void Application::evalScript(const char* sprite) {
 	LOGI(*String::Utf8Value(result->ToString()));
 }
 Handle<Value> Application::eval(const char* script) {
+	LOGI("Application::eval %s", script);
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
 
@@ -274,7 +263,7 @@ void Application::onSurfaceCreated(int width, int height) {
     argv[0] = Number::New(width);
     argv[1] = Number::New(height);
 	LOGI("onSurfaceCreated");
-	render->callFunction("onSurfaceCreated", 2, argv);
+//	render->callFunction("onSurfaceCreated", 2, argv);
 }
 void Application::onSurfaceChanged(int width, int height) {
     mWidth = width;
@@ -288,7 +277,7 @@ void Application::onSurfaceChanged(int width, int height) {
 	argv[0] = Number::New(width);
 	argv[1] = Number::New(height);
 	LOGI("onSurfaceChanged");
-	render->callFunction("onSurfaceChanged",2, argv);
+//	render->callFunction("onSurfaceChanged",2, argv);
 }
 void Application::onDrawFrame() {
 	ENTER_ISOLATE;
@@ -297,7 +286,7 @@ void Application::onDrawFrame() {
 
 	static const char* name = "onDrawFrame";
 	LOGI("onDrawFrame");
-	render->callFunction(name);
+//	render->callFunction(name);
 }
 void Application::appendMouseTouch(int button, int state, int x, int y) {
     touchEvent->appendMouseTouch(button, state, x, mHeight - y);

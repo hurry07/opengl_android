@@ -14,7 +14,7 @@
 			<arg line="V=1" />
 			<arg line="NDK_LOG=1" />
 			<arg line="STRIP=" />
-			<arg line="-j4" />
+			<!-- <arg line="-j4" /> -->
 		</exec>
 	</target>
 </project>

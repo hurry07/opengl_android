@@ -37,15 +37,7 @@ static unsigned long ft_zip_read(FT_Stream stream, unsigned long offset, unsigne
     if(count == 0) {
         return 0;
     }
-//    __totaltimes++;
-//    __totalread+=count;
-//    if(offset > __maxoffset) {
-//        __maxoffset = offset;
-//    }
-//    if(count > __maxread) {
-//        __maxread = count;
-//    }
-//    LOGI("count:%d", count);
+    LOGI("ft_zip_read:%d", count);
     FILE* file = static_cast<FILE*>(stream->descriptor.pointer);
     fseek(file, offset, SEEK_SET);
     return fread(buffer, 1, count, file);

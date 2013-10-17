@@ -13,6 +13,7 @@ ByteBuffer::ByteBuffer() : mElement(CLASS_ArrayBuffer), mPtr(0), mByteOffset(0),
 }
 ByteBuffer::~ByteBuffer() {
     if(mRealse) {
+    	LOGI("ByteBuffer::~ByteBuffer");
         delete[] mPtr;
     }
 }

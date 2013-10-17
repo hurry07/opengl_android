@@ -50,6 +50,7 @@ public:
 		HandleScope scope(node_isolate);
         ClassBase* t = internalPtr<ClassBase>(info);
         if(t != 0) {
+        	LOGI("ClassWrap.release %d", t->getExportStruct()->mType);
             t->release();
         }
     }
