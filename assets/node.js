@@ -1,6 +1,7 @@
 (function (process) {
     var global = this;
     var print__ = this.print;
+    var module_depth = 0;
 
     function startup() {
         startup.globalExtend();
@@ -113,7 +114,7 @@
     };
 
     NativeModule.prototype.compile = function () {
-    	print__('require-->' + this.id);
+    	print__((module_depth++) + ' require-->' + this.id);
     	try {
 	        var fn = process.binding(this.id);
 	        fn.call(this, this.exports, NativeModule.require, this, this.filename);
@@ -121,7 +122,7 @@
     	} catch(e) {
     		print__('exception:' + e);
     	}
-        print__('require<--' + this.id);
+        print__((--module_depth) + ' require<--' + this.id);
     };
 
     NativeModule.prototype.cache = function () {

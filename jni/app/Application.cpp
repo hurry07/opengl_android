@@ -103,13 +103,17 @@ static void printf__(const v8::FunctionCallbackInfo<Value>& args) {
 }
 
 Local<Function> Application::loadModuleFn(const char* name) {
+	LOGI("loadModuleFn -a:%s", name);
 	HANDLE_SCOPE;
 
+	LOGI("loadModuleFn -b:%s", name);
 	JSFile* file = JSFile::loadAsset(name);
+	LOGI("loadModuleFn -c:%s %d", name, file->size());
 	if (file->isEmpty()) {
-		printf("error, file not found:%s\n", name);
+		LOGI("error, file not found:%s\n", name);
 	}
 
+	LOGI("loadModuleFn -d:%s", name);
 	std::string sc("(function (exports, require, module, __filename) {\n"
                    "try {\n");
 	if (!file->isEmpty()) {
@@ -121,11 +125,13 @@ Local<Function> Application::loadModuleFn(const char* name) {
     sc.append(" ['+e+']');}"
               "\n});");
     delete file;
-//    LOGI("%s", sc.c_str());
+    LOGI("=============>>>%s", sc.c_str());
+    LOGI("=============<<< %d", file->size());
 
 	v8::Handle<v8::String> source = String::New(sc.c_str());
 	Local<Script> comp = Script::Compile(source);
 
+    LOGI("loadModuleFn<---");
 	return scope.Close(Local<Function>::Cast(comp->Run()));
 }
 
@@ -138,13 +144,17 @@ void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
 
 	Handle<Function> func;
 
+	LOGI("Application::Binding %s", *module_v);
 	// buildin_module 就是用 c++ 实现的 module
 	if ((modp = get_builtin_module(*module_v)) != NULL) { // c++ 实现的模块
+		LOGI("Application::Binding 01");
 		func = FunctionTemplate::New(modp->register_func)->GetFunction();
 	} else {
+		LOGI("Application::Binding 02 %s", *module_v);
 		func = loadModuleFn(*module_v);
 	}
 
+	LOGI("Application::Binding return");
 	args.GetReturnValue().Set(func);
 }
 Local<Script> Application::loadScript(const char* path) {

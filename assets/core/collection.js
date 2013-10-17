@@ -1,4 +1,5 @@
 var _inherit = require('core/inherit.js');
+console.log('collections.js:', _inherit);
 
 /**
  * used as cpp template
