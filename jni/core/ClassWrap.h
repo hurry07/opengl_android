@@ -1,3 +1,4 @@
+
 /*
  * JSWrap.h
  *
@@ -49,8 +50,10 @@ public:
     static void release(const v8::FunctionCallbackInfo<Value>& info) {
 		HandleScope scope(node_isolate);
         ClassBase* t = internalPtr<ClassBase>(info);
+    	//LOGI("ClassWrap.release 01:%p", t);
         if(t != 0) {
-        	LOGI("ClassWrap.release %d", t->getExportStruct()->mType);
+//        	int type = t->getExportStruct()->mType;
+//        	LOGI("ClassWrap.release %d", type);
             t->release();
         }
     }

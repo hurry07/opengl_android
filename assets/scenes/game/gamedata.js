@@ -1,3 +1,4 @@
+
 var Data = {
 };
 var BeltData = {
@@ -182,9 +183,11 @@ Belt.prototype.setMultip = function (i) {
 Belt.prototype.getCost = function () {
     return this.cost;
 };
+
 Belt.prototype.spend = function (cost) {
     this.total -= cost;
 };
+
 /**
  * @returns {number}
  */
@@ -197,7 +200,6 @@ Belt.prototype.getCurrent = function () {
 Belt.prototype.getCurrent = function () {
     return this.current;
 };
-
 Belt.prototype.onMatch = function (count, type) {
     return this.total += count * (type + 1) * this.bet;
 };

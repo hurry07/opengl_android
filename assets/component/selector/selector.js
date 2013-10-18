@@ -9,6 +9,7 @@ function Selector() {
     this.group = null;
     this.type = ' ';
 }
+console.log('selector.js--->01');
 Selector.prototype.match = function (cssnode) {
     return false;
 }
@@ -29,6 +30,7 @@ Selector.prototype.getStride = function () {
     return 1;
 }
 
+console.log('selector.js--->02');
 // ==========================
 // TypeSelector * | div | image
 // ==========================
@@ -138,6 +140,7 @@ ChildSelector.prototype.isTight = function () {
     return true;
 }
 
+console.log('selector.js--->03');
 // ==========================
 // ClassSelector .
 // ==========================
@@ -240,6 +243,7 @@ SelectorGroup.prototype.match = function (path) {
     return success && selindex == -1;
 }
 
+console.log('selector.js--->04');
 exports.Selector = Selector;
 exports.IdSelector = IdSelector;
 exports.ClassSelector = ClassSelector;
@@ -248,5 +252,6 @@ exports.PseudoSelector = PseudoSelector;
 exports.TypeSelector = TypeSelector;
 exports.AttributeSelector = AttributeSelector;
 exports.Adjacentselectors = Adjacentselectors;
+console.log('selector.js--->05');
 
 exports.SelectorGroup = SelectorGroup;

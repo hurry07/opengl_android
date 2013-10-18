@@ -23,8 +23,10 @@ AssetUtil::~AssetUtil() {
 }
 
 void AssetUtil::load(JSFile* tofile, const char* path) {
+	LOGW("AssetUtil::load:%s", path);
     FILE* file = android_fopen(path, "rb");
     if (file == NULL) {
+    	LOGE("AssetUtil::load notfound:%s", path);
         return;
     }
 
@@ -52,17 +54,24 @@ static fpos_t android_seek(void* cookie, fpos_t offset, int whence) {
 	return AAsset_seek((AAsset*) cookie, offset, whence);
 }
 static int android_close(void* cookie) {
-	AAsset_close((AAsset*) cookie);
+	AAsset_close((AAsset*)cookie);
+	LOGE("android_close %p", cookie);
 	return 0;
 }
 
 FILE* AssetUtil::android_fopen(const char* fname, const char* mode) {
+	LOGE("AssetUtil::android_fopen:%s %s", fname, mode);
 	if (mode[0] == 'w') {
 		return NULL;
 	}
-	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, 0);
+	LOGE("android_fopen 02 %p", mgr);
+	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_UNKNOWN);
+	LOGE("android_fopen %p", asset);
 	if (!asset) {
+		LOGE("AssetUtil::android_fopen null:%s %s", fname, mode);
 		return NULL;
 	}
+
+	LOGE("android_fopen 04");
 	return funopen(asset, android_read, android_write, android_seek, android_close);
 }

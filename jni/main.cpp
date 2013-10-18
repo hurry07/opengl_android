@@ -23,6 +23,8 @@ Application* app = NULL;
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_initWithAsset
 (JNIEnv * env, jobject instance, jobject assetManager) {
 	AssetUtil::mgr = AAssetManager_fromJava(env, assetManager);
+	FILE* f = AssetUtil::android_fopen("images/upgrade/split_v.png", "r");
+	fclose(f);
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsCreate
@@ -78,11 +80,11 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceCreated
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onDrawFrame
   (JNIEnv * env, jobject instance, jobject) {
-//  app->onDrawFrame();
+	app->onDrawFrame();
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSRender_onSurfaceChanged
   (JNIEnv * env, jobject instance, jobject, jint width, jint height) {
 	LOGI("render width:%d height:%d", width, height);
-//	app->onSurfaceChanged(width, height);
+	app->onSurfaceChanged(width, height);
 }

@@ -8,6 +8,7 @@ var _matrix4 = _geometry.matrix4;
 var _v2 = _geometry.vec2f;
 var _v3 = _geometry.vec3f;
 var _glm = _geometry.glm;
+console.log('ninepatch.js');
 
 /**
  * underlying detail operation

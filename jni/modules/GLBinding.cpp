@@ -1682,6 +1682,7 @@ JS_METHOD(getShaderParameter) {
 		case GL_DELETE_STATUS:
 		case GL_COMPILE_STATUS:
 			glGetShaderiv(shader, pname, &value);
+			//LOGI("getShaderParameter:%d %d", pname, value);
 			args.GetReturnValue().Set(JS_BOOL(value!=0?true:false));
             break;
 		case GL_SHADER_TYPE:
@@ -1700,18 +1701,22 @@ JS_METHOD(getShaderParameter) {
 JS_METHOD(getShaderInfoLog) {
     HandleScope scope;
 
-    int len = -1;
     GLuint shader = ARGS_GLuint(args[0]);
-    glGetShaderiv((GLuint) shader, GL_INFO_LOG_LENGTH, &len);
-    if(len == -1) {
+	GLint length = -1;
+	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &length);
+
+    //LOGE("getShaderInfoLog:%d %d", shader, length);
+    if(length <= 0) {
     	args.GetReturnValue().Set(v8::Undefined());
+    } else {
+    	GLchar* src = new GLchar[length];
+    	glGetShaderInfoLog(shader, length, NULL, src);
+    	//LOGE("getShaderInfoLog.log:%s", src);
+    	Local<String> jslog = String::New(src, length);
+    	delete[] src;
+
+    	args.GetReturnValue().Set(jslog);
     }
-
-    int id = args[0]->Int32Value();
-	char Error[len];
-	glGetShaderInfoLog(id, 1024, &len, Error);
-
-	args.GetReturnValue().Set(String::New(Error));
 }
 JS_METHOD(getShaderSource) {
     HandleScope scope;

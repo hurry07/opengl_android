@@ -1,7 +1,10 @@
 <project name="precompile" default="build">
 	<property name="projectdir" location="." />
+	<!-- 
 	<property name="ndk_root" value="/Users/jie/android-ndk-r8b" />
-	<!-- <property name="ndk_root" value="/Users/jie/environment/android-ndk-r8d" /> -->
+	<property name="ndk_root" value="/Users/jie/environment/android-ndk-r9" />
+	-->
+	<property name="ndk_root" value="/Users/jie/environment/android-ndk-r8d" />
 	<property name="NDK_MODULE_PATH" value="${ndk_root}:${projectdir}/dependence" />
 
 	<target name="build">
@@ -14,6 +17,7 @@
 			<arg line="V=1" />
 			<arg line="NDK_LOG=1" />
 			<arg line="STRIP=" />
+			<arg line="-j6" />
 			<!-- <arg line="-j4" /> -->
 		</exec>
 	</target>

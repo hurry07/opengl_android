@@ -2,8 +2,10 @@ var _UIContainer = require('component/uicontainer.js');
 var _global = require('framework/global.js');
 var _inherit = require('core/inherit.js');
 
+
 var WIDTH = 220;
 var HEIGHT = 400;
+
 
 function MessagePanel(game) {
     _UIContainer.call(this);

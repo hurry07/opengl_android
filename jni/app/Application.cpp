@@ -15,7 +15,6 @@
 
 #include "../modules/modules.h"
 #include "../modules/CCImage.h"
-#include "../utils/AssetUtil.h"
 #include "../global.h"
 
 #include <string>
@@ -26,6 +25,7 @@ using namespace node;
 bool Application::debug = false;
 
 Isolate* node_isolate = NULL;
+int spritecount = 0;
 
 #define ENTER_ISOLATE \
 Locker locker(node_isolate);\
@@ -40,6 +40,22 @@ Context::Scope context_scope(context)
 
 #define SAFE_DELETE(p) if(p!=NULL){delete p;}
 #define SAFE_DISPOSE(p) p.Dispose()
+
+static void ExceptionToString(v8::TryCatch* try_catch) {
+	v8::HandleScope handle_scope;
+	v8::String::Utf8Value exception(try_catch->Exception());
+	v8::Handle<v8::Message> message = try_catch->Message();
+	if (message.IsEmpty()) {
+		LOGE("%s\n", *exception);
+	} else {
+		v8::String::Utf8Value filename(message->GetScriptResourceName());
+		int linenum = message->GetLineNumber();
+		int colnum = message->GetStartColumn();
+		LOGE("%s:%i:%i %s\n", *filename, linenum, colnum, *exception);
+		v8::String::Utf8Value sourceline(message->GetSourceLine());
+		LOGE("%s\n", *sourceline);
+	}
+}
 
 Application::Application() {
     mWidth = 0;
@@ -103,36 +119,39 @@ static void printf__(const v8::FunctionCallbackInfo<Value>& args) {
 }
 
 Local<Function> Application::loadModuleFn(const char* name) {
-	LOGI("loadModuleFn -a:%s", name);
+//	LOGI("loadModuleFn 01");
 	HANDLE_SCOPE;
+//	LOGI("loadModuleFn 02");
 
-	LOGI("loadModuleFn -b:%s", name);
 	JSFile* file = JSFile::loadAsset(name);
-	LOGI("loadModuleFn -c:%s %d", name, file->size());
 	if (file->isEmpty()) {
-		LOGI("error, file not found:%s\n", name);
+		LOGE("error, file not found:%s\n", name);
 	}
 
-	LOGI("loadModuleFn -d:%s", name);
-	std::string sc("(function (exports, require, module, __filename) {\n"
-                   "try {\n");
+	std::string sc("(function (exports, require, module, __filename) {try{\n");
 	if (!file->isEmpty()) {
 		sc.append(file->chars(), file->size());
 	}
-
-	sc.append("\n}catch(e){console.log('Exception occur:");
+	sc.append("\n}catch(e){console.error('Exception occur:");
     sc.append(name);
-    sc.append(" ['+e+']');}"
-              "\n});");
+    sc.append(" ['+e+']');}})");
+//	LOGI("loadModuleFn %d", file->size());
+
     delete file;
-    LOGI("=============>>>%s", sc.c_str());
-    LOGI("=============<<< %d", file->size());
 
 	v8::Handle<v8::String> source = String::New(sc.c_str());
+//	LOGI("loadModuleFn 03");
+	v8::TryCatch try_catch;
 	Local<Script> comp = Script::Compile(source);
-
-    LOGI("loadModuleFn<---");
-	return scope.Close(Local<Function>::Cast(comp->Run()));
+	if (comp.IsEmpty()) {
+		LOGE("comp.IsEmpty()");
+//		ReportException(try_catch);
+	}
+	Local<Function> fun = Local<Function>::Cast(comp->Run());
+//	LOGI("loadModuleFn 04");
+//	LOGE("before return");
+//	ExceptionToString(&try_catch);
+	return scope.Close(fun);
 }
 
 void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
@@ -142,20 +161,26 @@ void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
 	String::Utf8Value module_v(module);
 	node::node_module_struct* modp;
 
+//	v8::TryCatch try_catch;
 	Handle<Function> func;
-
-	LOGI("Application::Binding %s", *module_v);
+	LOGI("=============>>> Binding %s", *module_v);
 	// buildin_module 就是用 c++ 实现的 module
 	if ((modp = get_builtin_module(*module_v)) != NULL) { // c++ 实现的模块
-		LOGI("Application::Binding 01");
+		LOGI("find native");
 		func = FunctionTemplate::New(modp->register_func)->GetFunction();
 	} else {
-		LOGI("Application::Binding 02 %s", *module_v);
+//		LOGI("find file 1:%d aa", spritecount);
+		LOGI("find file:%d", spritecount);
 		func = loadModuleFn(*module_v);
+//		LOGI("find file 2");
+		spritecount++;
 	}
+//	LOGE("compile exception");
+//	ExceptionToString(&try_catch);
 
-	LOGI("Application::Binding return");
+	LOGI("=============<<< %s", *module_v);
 	args.GetReturnValue().Set(func);
+	//while (!v8::V8::IdleNotification());
 }
 Local<Script> Application::loadScript(const char* path) {
 	HANDLE_SCOPE;
@@ -196,10 +221,10 @@ void Application::init() {
 		Handle<Value> arg = process;
 		f->Call(context->Global(), 1, &arg);
 
-//        // bind event
-//        Handle<Object> eventExports = eval("require('core/event.js')")->ToObject();
-//        touchEvent = new TouchEvent(eventExports->Get(String::New("touchEvent"))->ToObject());
-//        keyEvent = new TouchEvent(eventExports->Get(String::New("keyEvent"))->ToObject());
+        // bind event
+        Handle<Object> eventExports = eval("require('core/event.js')")->ToObject();
+        touchEvent = new TouchEvent(eventExports->Get(String::New("touchEvent"))->ToObject());
+        keyEvent = new TouchEvent(eventExports->Get(String::New("keyEvent"))->ToObject());
 
 		// load game module
 		Handle<Value> gameExports = eval("require('game.js')");
@@ -242,6 +267,7 @@ void Application::gc() {
 	while (!v8::V8::IdleNotification());
 }
 void Application::evalScript(const char* sprite) {
+	LOGI("evalScript:%s", sprite);
 	ENTER_ISOLATE;
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
@@ -250,7 +276,7 @@ void Application::evalScript(const char* sprite) {
 	Local<Script> comp = Script::Compile(source);
     Local<Value> result = comp->Run();
 
-	LOGI(*String::Utf8Value(result->ToString()));
+	LOGI("%s", *String::Utf8Value(result->ToString()));
 }
 Handle<Value> Application::eval(const char* script) {
 	LOGI("Application::eval %s", script);
@@ -273,7 +299,7 @@ void Application::onSurfaceCreated(int width, int height) {
     argv[0] = Number::New(width);
     argv[1] = Number::New(height);
 	LOGI("onSurfaceCreated");
-//	render->callFunction("onSurfaceCreated", 2, argv);
+	render->callFunction("onSurfaceCreated", 2, argv);
 }
 void Application::onSurfaceChanged(int width, int height) {
     mWidth = width;
@@ -287,16 +313,16 @@ void Application::onSurfaceChanged(int width, int height) {
 	argv[0] = Number::New(width);
 	argv[1] = Number::New(height);
 	LOGI("onSurfaceChanged");
-//	render->callFunction("onSurfaceChanged",2, argv);
+	render->callFunction("onSurfaceChanged",2, argv);
 }
 void Application::onDrawFrame() {
 	ENTER_ISOLATE;
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
 
+	//LOGI("onDrawFrame");
 	static const char* name = "onDrawFrame";
-	LOGI("onDrawFrame");
-//	render->callFunction(name);
+	render->callFunction(name);
 }
 void Application::appendMouseTouch(int button, int state, int x, int y) {
     touchEvent->appendMouseTouch(button, state, x, mHeight - y);

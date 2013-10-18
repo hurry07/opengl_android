@@ -16,6 +16,9 @@
 
 package com.op.activity;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.content.res.AssetManager;
 import android.os.Bundle;
@@ -41,17 +44,19 @@ public class JSActivity extends Activity {
         mgr = getAssets();
         initWithAsset(mgr);
 
-        System.out.println("JSActivity.onCreate() 0a");
-        jsCreate();
-        System.out.println("JSActivity.onCreate() 0b");
-//        evalScript("(function() {var a='aabbcc';return a;})()");
-//        System.out.println("GL2JNIActivity.onCreate()");
+        try {
+            InputStream in = mgr.open("images/upgrade/split_v.png");
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        System.out.println("JSActivity.onCreate() 01");
+        jsCreate();
+        //        evalScript("(function() {var a='aabbcc';return a;})()");
+        //        System.out.println("GL2JNIActivity.onCreate()");
+
         mView = new JSSurfaceView(getApplication());
-        System.out.println("JSActivity.onCreate() 02");
         setContentView(mView);
-        System.out.println("JSActivity.onCreate() 03");
     }
 
     @Override

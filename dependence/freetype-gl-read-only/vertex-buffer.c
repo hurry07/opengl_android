@@ -214,8 +214,8 @@ vertex_buffer_print( vertex_buffer_t * self )
 
     assert(self);
 
-    fprintf( stderr, "%ld vertices, %ld indices\n",
-             vector_size( self->vertices ), vector_size( self->indices ) );
+//  fprintf( stderr, "%ld vertices, %ld indices\n", vector_size( self->vertices ), vector_size( self->indices ) );
+    fprintf( stderr, "%zu vertices, %zu indices\n", vector_size( self->vertices ), vector_size( self->indices ) );
     while( self->attributes[i] )
     {
         int j = 8;

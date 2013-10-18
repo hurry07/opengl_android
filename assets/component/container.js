@@ -18,6 +18,7 @@ function Container() {
     _Node.call(this);
     this.children = [];
 }
+
 _inherit(Container, _Node);
 Container.prototype.__elementType |= Container.prototype.ElementTypeContainer;
 Container.prototype.addChild = function (child) {

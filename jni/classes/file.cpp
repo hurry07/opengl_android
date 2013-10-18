@@ -74,6 +74,7 @@ ClassType JSFile::getClassType() {
     return getExportStruct()->mType;
 }
 void JSFile::doRelease() {
+	//LOGI("JSFile::doRelease %p", mBuffer);
     delete[] mBuffer;
 }
 
