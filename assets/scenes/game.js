@@ -5,6 +5,7 @@ var _MessagePanel = require('scenes/game/messagepanel.js');
 var _layout = require('tools/layout.js');
 var _relative = _layout.relative;
 var _model = require('scenes/game/gamedata.js').beltdata;
+console.log('--->01');
 
 var Game = _scene.createScene(
     function (w, h) {
@@ -12,21 +13,27 @@ var Game = _scene.createScene(
         this.addChild(this.gamearea = new _GameArea(this));
         this.addChild(this.betpanel = new _BetPanel(this));
         this.addChild(this.msgpanel = new _MessagePanel(this));
+        console.log('_scene.createScene 02', this.querySelector);
 
-        this.querySelector('control>button').forEach(function (button) {
-            if (button.getId() == 'ok') {
-                button.on('click', this.okClick, this);
-            } else {
-                button.on('click', this.autoClick, this);
-            }
-        }, this);
-
-        this.mCoins = this.querySelector('#coinsbar')[0];
+//        var buttons = this.querySelector('control>button');
+//        console.log('buttons:', buttons);
+//        this.querySelector('control>button').forEach(function (button) {
+//        	console.log('_scene.createScene 021');
+//            if (button.getId() == 'ok') {
+//                button.on('click', this.okClick, this);
+//            } else {
+//                button.on('click', this.autoClick, this);
+//            }
+//        }, this);
+//        console.log('_scene.createScene 03');
+//
+//        this.mCoins = this.querySelector('#coinsbar')[0];
 
 //        var text = _global.textNode('Georgia', 90, 'ABCDEabcde');
 //        var text = _global.textNode('Georgia', 30, 'ABCDEabcde');
 //        text.setPosition(50, 200);
 //        this.addChild(text);
+        console.log('_scene.createScene 04');
         this.onSizeChange(w, h);
     }
 );
@@ -74,5 +81,6 @@ Game.prototype.layout = function () {
  */
 Game.prototype.onGroupFind = function (groups) {
 };
+console.log('--->02');
 
 module.exports = Game;

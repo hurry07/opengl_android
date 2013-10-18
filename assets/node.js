@@ -8,7 +8,7 @@
         startup.globalRequire();
         startup.globalConsole();
         startup.globalTypedArray();
-        startup.globalGL();
+//        startup.globalGL();
     }
 
     startup.globalExtend = function() {

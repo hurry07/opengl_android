@@ -71,8 +71,8 @@ function createFont(path, size) {
 }
 
 var mFontsDB = {}
-mFontsDB['fat_40'] = createFont('fat', 40);
-mFontsDB['fat_20'] = createFont('fat', 20);
+//mFontsDB['fat_40'] = createFont('fat', 40);
+//mFontsDB['fat_20'] = createFont('fat', 20);
 
 function fontManager() {
 	function createFont(path, size) {

@@ -24,7 +24,6 @@ var mCount = 0;
 game.render = {
     onSurfaceCreated: function (width, height) {
         _gl.clearColor(1, 1, 1, 0);
-        _gl.clearColor(1, 0, 1, 0);
 
         _gl.enable(_gl.BLEND);
         _gl.blendFunc(_gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
@@ -40,8 +39,8 @@ game.render = {
         mCamera.viewport();
 
         if (firstInit) {
-			_global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
-            //_global.registerScene(require('scenes/game.js').newInstance('cover', width, height));
+			//_global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
+            _global.registerScene(require('scenes/game.js').newInstance('game', width, height));
             firstInit = false;
         }
         _global.updateContext.reset();

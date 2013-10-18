@@ -16,7 +16,6 @@ function getPointAbsoultToLocal(node, v) {
     v.sub(node.mCenter);
     return v;
 }
-
 // ========================================================
 // Local Point to World
 // ========================================================
@@ -25,6 +24,7 @@ function localToWorld(node, v) {
     _glm.mulMV3(v, m, v);
     return v;
 }
+
 
 // ========================================================
 // Adapters
@@ -161,7 +161,6 @@ exports.absolute = {
         layoutTo: getLayoutTo(getPointAbsoult, getPointAbsoultToLocal)
     }
 }
-
 // layout using object coordinate
 exports.local = {
     layoutTo: getLayoutTo(getPointLocal),

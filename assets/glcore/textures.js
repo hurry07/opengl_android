@@ -1,3 +1,6 @@
+/**
+ * @fileoverview This file contains objects to manage textures.
+ */
 var _autorelease = require('core/autorelease.js');
 var gl = require('opengl');
 var inherit = require('core/inherit.js');
