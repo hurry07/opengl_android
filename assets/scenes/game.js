@@ -10,10 +10,13 @@ console.log('--->01');
 var Game = _scene.createScene(
     function (w, h) {
         this.setSize(w, h);
+        var t1 = new Date().getTime();
         this.addChild(this.gamearea = new _GameArea(this));
+        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
         this.addChild(this.betpanel = new _BetPanel(this));
+        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
         this.addChild(this.msgpanel = new _MessagePanel(this));
-        console.log('_scene.createScene 02', this.querySelector);
+        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
 
 //        var buttons = this.querySelector('control>button');
 //        console.log('buttons:', buttons);
