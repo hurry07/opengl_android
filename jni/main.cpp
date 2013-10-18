@@ -23,23 +23,6 @@ Application* app = NULL;
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_initWithAsset
 (JNIEnv * env, jobject instance, jobject assetManager) {
     AssetUtil::mgr = AAssetManager_fromJava(env, assetManager);
-
-    long size = 0;
-    FILE* file = 0;
-
-	file = AssetUtil::android_fopen("images/upgrade/paper_01.png", "r");
-    fseek(file, 0, SEEK_END);
-    size = ftell(file);
-    rewind(file);
-	fclose(file);
-	LOGE("initAsset %ld", size);
-
-	file = AssetUtil::android_fopen("images/upgrade/paper_01.png", "r");
-    fseek(file, 0, SEEK_END);
-    size = ftell(file);
-    rewind(file);
-	fclose(file);
-	LOGE("initAsset %ld", size);
 }
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsCreate

@@ -58,7 +58,7 @@ game.render = {
     onDrawFrame: function () {
 //       console.log('game.onDrawFrame');
         _global.runSchedule();
-//        _framerate.update();
+        _framerate.update();
     }
 };
 
