@@ -18,8 +18,9 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := libgl2jni
 #LOCAL_CFLAGS    := -Wno-psabi -g
-LOCAL_CFLAGS    := -Werror -Wno-psabi -g
-LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -lc -lz -g
+LOCAL_CFLAGS    := -Werror -Wno-psabi
+#LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -lc -lz -g
+LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -lc -lz
 LOCAL_SRC_FILES := main.cpp \
 	app/Application.cpp \
 	autorelease/ReleaseImpl.cpp \
