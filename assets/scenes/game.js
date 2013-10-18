@@ -10,13 +10,14 @@ console.log('--->01');
 var Game = _scene.createScene(
     function (w, h) {
         this.setSize(w, h);
-        var t1 = new Date().getTime();
+    	var _timer = require('core/timer.js');
+    	var tick = new _timer.TickTack();
         this.addChild(this.gamearea = new _GameArea(this));
-        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
+        tick.check('_GameArea');
         this.addChild(this.betpanel = new _BetPanel(this));
-        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
+        tick.check('_BetPanel');
         this.addChild(this.msgpanel = new _MessagePanel(this));
-        console.log('_scene.createScene:', (new Date().getTime() - t1)/1000);
+        tick.check('_MessagePanel');
 
 //        var buttons = this.querySelector('control>button');
 //        console.log('buttons:', buttons);

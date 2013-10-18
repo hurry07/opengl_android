@@ -21,11 +21,15 @@ Timer.prototype.getTime = function() {
 function TickTack() {
 	this.start = new Date().getTime();
 }
-TickTack.prototype.check = function() {
+TickTack.prototype.check = function(msg) {
 	var time = new Date().getTime();
 	var pass = time - this.start;
 	this.start = time;
-	console.log(pass / 1000);
+	if(msg) {
+		console.log(msg + ':' + (pass / 1000));
+	} else {
+		console.log(pass / 1000);
+	}
 }
 
 Timer.TickTack = TickTack;

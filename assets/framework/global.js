@@ -106,7 +106,7 @@ function fontManager() {
 	};
 }
 function findFont(name, size) {
-    return mFontsDB[name + '_' + size] || (  mFontsDB[name + '_' + size] = createFont(name, size));
+    return mFontsDB[name + '_' + size] || (mFontsDB[name + '_' + size] = createFont(name, size));
 }
 
 /**
