@@ -55,26 +55,26 @@ public class JSActivity extends Activity {
         //        evalScript("(function() {var a='aabbcc';return a;})()");
         //        System.out.println("GL2JNIActivity.onCreate()");
 
-        mView = new JSSurfaceView(getApplication());
-        setContentView(mView);
+//        mView = new JSSurfaceView(getApplication());
+//        setContentView(mView);
     }
 
     @Override
     protected void onDestroy() {
-        jsDestory();
+//        jsDestory();
         super.onDestroy();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mView.onPause();
+//        mView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mView.onResume();
+//        mView.onResume();
     }
 
     /**

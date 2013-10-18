@@ -51,27 +51,32 @@ static int android_write(void* cookie, const char* buf, int size) {
 	return EACCES; // can't provide write access to the apk
 }
 static fpos_t android_seek(void* cookie, fpos_t offset, int whence) {
+//	LOGE("android_seek %d", offset);
 	return AAsset_seek((AAsset*) cookie, offset, whence);
 }
 static int android_close(void* cookie) {
 	AAsset_close((AAsset*)cookie);
-	LOGE("android_close %p", cookie);
+//	LOGE("android_close %p", cookie);
 	return 0;
 }
 
 FILE* AssetUtil::android_fopen(const char* fname, const char* mode) {
-	LOGE("AssetUtil::android_fopen:%s %s", fname, mode);
+//	LOGE("AssetUtil::android_fopen:%s %s", fname, mode);
 	if (mode[0] == 'w') {
 		return NULL;
 	}
-	LOGE("android_fopen 02 %p", mgr);
-	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_UNKNOWN);
-	LOGE("android_fopen %p", asset);
+
+//	LOGE("android_fopen 02 %p", mgr);
+//	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_UNKNOWN);
+	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_STREAMING);
+//	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_RANDOM);
+//	AAsset* asset = AAssetManager_open(AssetUtil::mgr, fname, AASSET_MODE_BUFFER);
+//	LOGE("android_fopen %p", asset);
 	if (!asset) {
 		LOGE("AssetUtil::android_fopen null:%s %s", fname, mode);
 		return NULL;
 	}
 
-	LOGE("android_fopen 04");
+//	LOGE("android_fopen 04");
 	return funopen(asset, android_read, android_write, android_seek, android_close);
 }
