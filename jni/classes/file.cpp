@@ -15,7 +15,9 @@ bool JSFile::isEmpty() {
 char* JSFile::allocate(int length) {
     mRelease = false;
     mLength = length;
-    mBuffer = new char[length];
+    mBuffer = new char[length + 1];
+    mBuffer[length] = 0;
+
     return mBuffer;
 }
 JSFile::JSFile() : mBuffer(0), mLength(0) {

@@ -1,6 +1,4 @@
-console.log('textuers.js-->01');
 var _autorelease = require('core/autorelease.js');
-console.log('textuers.js-->02');
 var gl = require('opengl');
 var inherit = require('core/inherit.js');
 var Image = require('core/image.js');

@@ -2,8 +2,6 @@ var _material = require('render/material.js');
 var _inherit = require('core/inherit.js');
 var _gl = require('opengl');
 
-console.log('materials.js---->01');
-
 // create user defined material
 /**
  * sprite material

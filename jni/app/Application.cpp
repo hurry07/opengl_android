@@ -163,14 +163,14 @@ void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
 
 //	v8::TryCatch try_catch;
 	Handle<Function> func;
-	LOGI("=============>>> Binding %s", *module_v);
+//	LOGI("=============>>> Binding %s", *module_v);
 	// buildin_module 就是用 c++ 实现的 module
 	if ((modp = get_builtin_module(*module_v)) != NULL) { // c++ 实现的模块
-		LOGI("find native");
+//		LOGI("find native");
 		func = FunctionTemplate::New(modp->register_func)->GetFunction();
 	} else {
 //		LOGI("find file 1:%d aa", spritecount);
-		LOGI("find file:%d", spritecount);
+//		LOGI("find file:%d", spritecount);
 		func = loadModuleFn(*module_v);
 //		LOGI("find file 2");
 		spritecount++;
@@ -178,7 +178,7 @@ void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
 //	LOGE("compile exception");
 //	ExceptionToString(&try_catch);
 
-	LOGI("=============<<< %s", *module_v);
+//	LOGI("=============<<< %s", *module_v);
 	args.GetReturnValue().Set(func);
 	//while (!v8::V8::IdleNotification());
 }
@@ -279,7 +279,7 @@ void Application::evalScript(const char* sprite) {
 	LOGI("%s", *String::Utf8Value(result->ToString()));
 }
 Handle<Value> Application::eval(const char* script) {
-	LOGI("Application::eval %s", script);
+//	LOGI("Application::eval %s", script);
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
 

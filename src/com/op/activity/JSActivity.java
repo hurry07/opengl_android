@@ -25,68 +25,69 @@ import android.os.Bundle;
 
 public class JSActivity extends Activity {
 
-    static {
-        System.loadLibrary("v8android");
-        System.loadLibrary("glm");
-        System.loadLibrary("freetype_gl");
-        System.loadLibrary("gl2jni");
-    }
+	static {
+		System.loadLibrary("v8android");
+		System.loadLibrary("glm");
+		System.loadLibrary("freetype_gl");
+		System.loadLibrary("gl2jni");
+	}
 
-    private AssetManager  mgr;
+	private AssetManager mgr;
 
-    private JSSurfaceView mView;
+	private JSSurfaceView mView;
 
-    @Override
-    protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
+	@Override
+	protected void onCreate(Bundle icicle) {
+		super.onCreate(icicle);
 
-        // prepare tools
-        mgr = getAssets();
-        initWithAsset(mgr);
+		// prepare tools
+		mgr = getAssets();
+		initWithAsset(mgr);
+		System.out.println("initWithAsset===========");
 
-        try {
-            InputStream in = mgr.open("images/upgrade/split_v.png");
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			InputStream in = mgr.open("images/upgrade/split_v.png");
+			in.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        jsCreate();
-        //        evalScript("(function() {var a='aabbcc';return a;})()");
-        //        System.out.println("GL2JNIActivity.onCreate()");
+		jsCreate();
+		// evalScript("(function() {var a='aabbcc';return a;})()");
+		// System.out.println("GL2JNIActivity.onCreate()");
 
-//        mView = new JSSurfaceView(getApplication());
-//        setContentView(mView);
-    }
+		 mView = new JSSurfaceView(getApplication());
+		 setContentView(mView);
+	}
 
-    @Override
-    protected void onDestroy() {
-//        jsDestory();
-        super.onDestroy();
-    }
+	@Override
+	protected void onDestroy() {
+		 jsDestory();
+		super.onDestroy();
+	}
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        mView.onPause();
-    }
+	@Override
+	protected void onPause() {
+		super.onPause();
+		 mView.onPause();
+	}
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        mView.onResume();
-    }
+	@Override
+	protected void onResume() {
+		super.onResume();
+		 mView.onResume();
+	}
 
-    /**
-     * 使用 asset 来初始化上下文
-     * 
-     * @param assetManager
-     */
-    public native void initWithAsset(AssetManager assetManager);
+	/**
+	 * 使用 asset 来初始化上下文
+	 * 
+	 * @param assetManager
+	 */
+	public native void initWithAsset(AssetManager assetManager);
 
-    public static native void jsCreate();
+	public static native void jsCreate();
 
-    public static native void jsDestory();
+	public static native void jsDestory();
 
-    public static native void evalScript(String script);
+	public static native void evalScript(String script);
 }

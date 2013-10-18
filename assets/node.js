@@ -114,7 +114,7 @@
     };
 
     NativeModule.prototype.compile = function () {
-    	print__((module_depth++) + ' require-->' + this.id);
+//    	print__((module_depth++) + ' require-->' + this.id);
     	try {
 	        var fn = process.binding(this.id);
 	        fn.call(this, this.exports, NativeModule.require, this, this.filename);
@@ -122,7 +122,7 @@
     	} catch(e) {
     		print__('exception:' + e);
     	}
-        print__((--module_depth) + ' require<--' + this.id);
+//        print__((--module_depth) + ' require<--' + this.id);
     };
 
     NativeModule.prototype.cache = function () {

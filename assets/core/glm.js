@@ -1,5 +1,4 @@
 var clz = require('nativeclasses');
-console.log('glm.js', clz);
 
 exports.vec2i = clz.vec2i;
 exports.vec3i = clz.vec3i;

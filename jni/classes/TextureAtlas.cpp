@@ -49,9 +49,7 @@ void TextureAtlas::init(const v8::FunctionCallbackInfo<Value> &args) {
     int width = args[0]->Uint32Value();
     int height = args[1]->Uint32Value();
     int depth = args[2]->Uint32Value();
-    LOGI("TextureAtlas-->01");
     atlas = texture_atlas_new(width, height, depth);
-    LOGI("TextureAtlas-->02");
 }
 
 class_struct* TextureAtlas::getExportStruct() {
