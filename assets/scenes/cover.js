@@ -142,6 +142,7 @@ function UpgradePanel() {
     this.addChild(this.title = _global.spriteNode(R.upgrade.z_turbo));
 
     this.addChild(this.mBg = _global.spriteNode(R.upgrade.bg_upgrade));
+    console.log('----->title');
     this.addChild(this.upgrade = titleButton('bt_upgrade', R.upgrade.b_z_upgrade));
     this.addChild(this.coins = new CoinsSlot());
 

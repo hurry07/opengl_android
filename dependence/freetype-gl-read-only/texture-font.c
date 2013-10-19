@@ -279,6 +279,7 @@ texture_font_new_fn(texture_atlas_t * atlas,
     self->filename = strdup( filename );
     self->size = size;
     self->outline_type = 0;
+    self->buffer = 0;
     self->fontload = (loader == 0 ? load_font_file : loader);
     self->outline_thickness = 0.0;
     self->hinting = 1;
