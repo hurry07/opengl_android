@@ -205,6 +205,7 @@ Handle<Object> Application::SetupProcessObject() {
 
 void Application::init() {
 	{
+		LOGI("Application.init");
 		ENTER_ISOLATE;
 		HANDLE_SCOPE;
 		CONTEXT_SCOPE;
@@ -267,15 +268,15 @@ void Application::pause() {
 	CONTEXT_SCOPE;
 
 	LOGI("pause");
-//	game->callFunction("pause");
+	game->callFunction("pause");
 }
 void Application::resume() {
 	ENTER_ISOLATE;
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
 
-	LOGI("resume");
-//	game->callFunction("resume");
+	LOGI("Application.resume");
+	game->callFunction("resume");
 }
 void Application::gc() {
 	ENTER_ISOLATE;

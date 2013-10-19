@@ -47,41 +47,6 @@ static void getInternal(Local<Value> infoV, ByteBuffer* buffer) {
     ClassBase* p = internalArg<ClassBase>(infoV);
     p->getUnderlying(buffer);
 }
-template<typename T>
-static bool getTypedArray(Local<Value> infoV, ByteBuffer* buffer) {
-    bool delete_ = false;
-    while (1) {
-        if(infoV.IsEmpty() || infoV->IsUndefined()) {
-            break;
-        }
-
-        if(infoV->IsArray()) {
-            Handle<Array> array = Handle<Array>::Cast(infoV);
-            buffer->allocate(array->Length() * sizeof(T));
-            populateValues<T>(buffer->value_ptr<T>(), array, 0);// TODO check
-            delete_ = true;
-            break;
-        }
-
-        ClassBase* p = internalArg<ClassBase>(infoV);
-        if(p == 0) {
-            if(infoV->IsNumber()) {
-                buffer->allocate(sizeof(T));
-                argValue(infoV, buffer->value_ptr<T>());
-                delete_ = true;
-            }
-        } else {
-            p->getUnderlying(buffer);
-        }
-
-        break;
-    }
-    
-    return delete_;
-}
-
-static void getTypedArray(Local<Value> value, ClassType type, ByteBuffer* buffer) {
-}
 
 static GLuint ToGLuint(const void* ptr) {
 	return static_cast<GLuint>(reinterpret_cast<size_t>(ptr));
@@ -250,11 +215,6 @@ static void getArgPtr(ByteBuffer* dest, ClassType ftype, const Local<Value>& arg
 #define ARGS_GLuintP(a) (GLuint*)getArrayPtr(a->ToObject())
 #define ARGS_GLfloatP(a) (GLfloat*)getArrayPtr(a->ToObject())
 #define ARGS_GLvoidP(a) (GLvoid*)getArrayPtr(a->ToObject())
-
-//#define CHECK_CHAIN_1(len, t1) CHECK_L(len) || CHECK_##t1(ARGS_NAME[0])
-//#define CHECK_CHAIN_2(len, t1, t2) CHECK_CHAIN_1(len, t1) || CHECK_##t2(ARGS_NAME[1])
-//#define CHECK_CHAIN_3(len, t1, t2, t3) CHECK_CHAIN_2(len, t1, t2) || CHECK_##t3(ARGS_NAME[2])
-//#define CHECK_CHAIN_4(len, t1, t2, t3, t4) CHECK_CHAIN_3(len, t1, t2) || CHECK_##t3(ARGS_NAME[2])
 
 // check arguments
 #define CHECK_ARG_1(name, t1) \

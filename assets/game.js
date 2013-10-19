@@ -1,5 +1,6 @@
 var _framerate = require('tools/framerate.js');
 var _gl = require('opengl');
+//var _glwrap = require('tools/glwrap.js');
 var _global = require('framework/global.js');
 
 var mCamera = _global.mCamera;
@@ -15,8 +16,10 @@ function Game() {
 }
 var game = new Game();
 game.pause = function () {
+	console.log('game.js pause');
 }
 game.resume = function () {
+	console.log('--->game.resume');
     _global.updateContext.reset();
 }
 
@@ -40,8 +43,8 @@ game.render = {
         if (firstInit) {
             var _timer = require('core/timer.js');
             var tick = new _timer.TickTack();
-            _global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
-            //_global.registerScene(require('scenes/game.js').newInstance('game', width, height));
+            //_global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
+            _global.registerScene(require('scenes/game.js').newInstance('game', width, height));
             tick.check('registerScene');
             firstInit = false;
         }
@@ -57,7 +60,7 @@ game.render = {
     },
     onDrawFrame: function () {
         _global.runSchedule();
-        _framerate.update();
+        //_framerate.update();
     }
 };
 function wrap(obj, name) {

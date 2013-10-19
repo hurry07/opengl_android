@@ -72,7 +72,7 @@ public class JSActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		mView.onResume();
+		//mView.onResume();
 	}
 
 	/**
