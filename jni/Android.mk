@@ -16,7 +16,7 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-LOCAL_MODULE    := libgl2jni
+LOCAL_MODULE    := libgame
 #LOCAL_CFLAGS    := -Wno-psabi -g
 LOCAL_CFLAGS    := -Werror -Wno-psabi
 #LOCAL_LDLIBS    := -llog -lGLESv2 -landroid -lc -lz -g

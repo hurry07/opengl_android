@@ -16,7 +16,7 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_initWithAsset
   (JNIEnv *, jobject, jobject);
 
 /*
- * Class:     com_android_gl2jni_GL2JNIView
+ * Class:     com_op_activity_JSActivity
  * Method:    jsCreate
  * Signature: ()V
  */
@@ -24,7 +24,7 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsCreate
   (JNIEnv *, jclass);
 
 /*
- * Class:     com_android_gl2jni_GL2JNIView
+ * Class:     com_op_activity_JSActivity
  * Method:    jsDestory
  * Signature: ()V
  */

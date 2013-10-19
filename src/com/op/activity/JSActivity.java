@@ -26,10 +26,10 @@ import android.os.Bundle;
 public class JSActivity extends Activity {
 
 	static {
-		System.loadLibrary("v8android");
+		System.loadLibrary("v8");
 		System.loadLibrary("glm");
 		System.loadLibrary("freetype_gl");
-		System.loadLibrary("gl2jni");
+		System.loadLibrary("game");
 	}
 
 	private AssetManager mgr;
@@ -53,29 +53,26 @@ public class JSActivity extends Activity {
 		}
 
 		jsCreate();
-		// evalScript("(function() {var a='aabbcc';return a;})()");
-		// System.out.println("GL2JNIActivity.onCreate()");
-
-		 mView = new JSSurfaceView(getApplication());
-		 setContentView(mView);
+		mView = new JSSurfaceView(getApplication());
+		setContentView(mView);
 	}
 
 	@Override
 	protected void onDestroy() {
-		 jsDestory();
+		jsDestory();
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		 mView.onPause();
+		mView.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		 mView.onResume();
+		mView.onResume();
 	}
 
 	/**

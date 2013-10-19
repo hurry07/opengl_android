@@ -8,4 +8,4 @@ APP_PLATFORM := android-9
 
 # not compile corefundation library for android.
 # corefoundation
-APP_MODULES := gl2jni 
+APP_MODULES := game 
