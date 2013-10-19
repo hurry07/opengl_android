@@ -41,6 +41,8 @@ import android.content.Context;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 
 /**
  * A simple GLSurfaceView sub-class that demonstrate how to perform
@@ -272,4 +274,52 @@ class JSSurfaceView extends GLSurfaceView {
     public static native void jsPause();
 
     public static native void jsResume();
+
+    /**
+     * @param button
+     * #define GLUT_LEFT_BUTTON        0
+     * #define GLUT_MIDDLE_BUTTON      1
+     * #define GLUT_RIGHT_BUTTON       2
+     * @param state
+     * #define GLUT_DOWN           0
+     * #define GLUT_UP             1
+     * @param x
+     * @param y
+     */
+    public static native void jsTouchClick(int button, int state, int x, int y);
+
+    public static native void jsTouchMove(int x, int y);
+
+    public static native void jsKeyBackPress();
+
+    public static native void jsKeyMenuPress();
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int x = (int) (event.getX(0) + 0.5f);
+        int y = (int) (event.getY(0) + 0.5f);
+        switch (event.getAction() & MotionEvent.ACTION_MASK) {
+            case MotionEvent.ACTION_DOWN:
+                jsTouchClick(0, 0, x, y);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                jsTouchMove(x, y);
+                break;
+            case MotionEvent.ACTION_UP:
+                jsTouchClick(0, 1, x, y);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK:
+                break;
+            case KeyEvent.KEYCODE_MENU:
+                break;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

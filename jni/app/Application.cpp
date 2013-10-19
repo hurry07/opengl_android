@@ -161,26 +161,16 @@ void Application::Binding(const v8::FunctionCallbackInfo<Value>& args) {
 	String::Utf8Value module_v(module);
 	node::node_module_struct* modp;
 
-//	v8::TryCatch try_catch;
 	Handle<Function> func;
 //	LOGI("=============>>> Binding %s", *module_v);
-	// buildin_module 就是用 c++ 实现的 module
 	if ((modp = get_builtin_module(*module_v)) != NULL) { // c++ 实现的模块
-//		LOGI("find native");
 		func = FunctionTemplate::New(modp->register_func)->GetFunction();
 	} else {
-//		LOGI("find file 1:%d aa", spritecount);
-//		LOGI("find file:%d", spritecount);
 		func = loadModuleFn(*module_v);
-//		LOGI("find file 2");
 		spritecount++;
 	}
-//	LOGE("compile exception");
-//	ExceptionToString(&try_catch);
-
 //	LOGI("=============<<< %s", *module_v);
 	args.GetReturnValue().Set(func);
-	//while (!v8::V8::IdleNotification());
 }
 Local<Script> Application::loadScript(const char* path) {
 	HANDLE_SCOPE;
@@ -232,6 +222,22 @@ void Application::init() {
 		render = new JSObject(game->getAttribute<Object>("render"));
     }
 }
+// ==========================
+// Events
+// ==========================
+void Application::appendMouseTouch(int button, int state, int x, int y) {
+    touchEvent->appendMouseTouch(button, state, x, mHeight - y);
+}
+void Application::appendMouseMove(int x, int y) {
+    touchEvent->appendMouseMove(x, mHeight - y);
+}
+void Application::appendKeyPress(unsigned char key, int x, int y) {
+    keyEvent->appendKeyPress(key, x, mHeight - y);
+}
+
+// ==========================
+// Life Cycle
+// ==========================
 void Application::destroy() {
 	{
 		ENTER_ISOLATE;
@@ -290,7 +296,7 @@ Handle<Value> Application::eval(const char* script) {
 void Application::onSurfaceCreated(int width, int height) {
     mWidth = width;
     mHeight = height;
-    
+
 	ENTER_ISOLATE;
 	HANDLE_SCOPE;
 	CONTEXT_SCOPE;
@@ -323,13 +329,4 @@ void Application::onDrawFrame() {
 	//LOGI("onDrawFrame");
 	static const char* name = "onDrawFrame";
 	render->callFunction(name);
-}
-void Application::appendMouseTouch(int button, int state, int x, int y) {
-    touchEvent->appendMouseTouch(button, state, x, mHeight - y);
-}
-void Application::appendMouseMove(int x, int y) {
-    touchEvent->appendMouseMove(x, mHeight - y);
-}
-void Application::appendKeyPress(unsigned char key, int x, int y) {
-    keyEvent->appendKeyPress(key, x, mHeight - y);
 }

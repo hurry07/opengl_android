@@ -24,6 +24,38 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsPause
 JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsResume
   (JNIEnv *, jclass);
 
+/*
+ * Class:     com_op_activity_JSSurfaceView
+ * Method:    jsTouchClick
+ * Signature: (IIII)V
+ */
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsTouchClick
+  (JNIEnv *, jclass, jint, jint, jint, jint);
+
+/*
+ * Class:     com_op_activity_JSSurfaceView
+ * Method:    jsTouchMove
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsTouchMove
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     com_op_activity_JSSurfaceView
+ * Method:    jsKeyBackPress
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsKeyBackPress
+  (JNIEnv *, jclass);
+
+/*
+ * Class:     com_op_activity_JSSurfaceView
+ * Method:    jsKeyMenuPress
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsKeyMenuPress
+  (JNIEnv *, jclass);
+
 #ifdef __cplusplus
 }
 #endif

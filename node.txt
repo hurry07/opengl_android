@@ -42,3 +42,6 @@ http://games.greggman.com/game/webgl-3d-cameras/
 
 adb logcat | /Users/jie/environment/android-ndk-r8d/ndk-stack -sym /Users/jie/svn/opengl_android/obj/local/armeabi
 adb logcat | /Users/jie/android-ndk-r8b/ndk-stack -sym /Users/jie/svn/opengl_android/obj/local/armeabi
+
+javah -classpath classes:/Users/jie/svn/opengl_android/android.jar com.op.activity.JSSurfaceView
+javah -classpath classes:/Users/jie/android-sdks/platforms/android-16/android.jar com.op.activity.JSSurfaceView

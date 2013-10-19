@@ -37,19 +37,6 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_jsDestory
 
 JNIEXPORT void JNICALL Java_com_op_activity_JSActivity_evalScript
 (JNIEnv * env, jclass activityClass, jstring script) {
-//	LOGI("Activity %d", 10);
-//
-//	Isolate* isolate = v8::Isolate::GetCurrent();
-//	HandleScope handle_scope(isolate);
-//	Local<v8::Context> exec_context = Context::New(isolate);
-//	Context::Scope context_scope(exec_context);
-//
-//	v8::Handle<v8::String> jscode = String::New(env->GetStringChars(script, NULL));
-//	Local<Script> comp = Script::Compile(jscode);
-//	Local<Value> result = comp->Run();
-//	String::Utf8Value retstr(result);
-//	LOGI("Activity %s", *retstr);
-	LOGI("Activity %d", 20);
 }
 
 // ==========================
@@ -65,6 +52,30 @@ JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsResume
   (JNIEnv *, jclass) {
 	LOGI("view.resume");
 	app->resume();
+}
+
+// ==========================
+// Events
+// ==========================
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsTouchClick
+  (JNIEnv *, jclass, jint button, jint state, jint x, jint y) {
+	app->appendMouseTouch(button, state, x, y);
+}
+
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsTouchMove
+  (JNIEnv *, jclass, jint x, jint y) {
+	app->appendMouseMove(x, y);
+}
+
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsKeyBackPress
+  (JNIEnv *, jclass) {
+	LOGE("jsKeyBackPress empth implement");
+}
+
+JNIEXPORT void JNICALL Java_com_op_activity_JSSurfaceView_jsKeyMenuPress
+  (JNIEnv *, jclass) {
+	//app->appendKeyPress();
+	LOGE("jsKeyMenuPress empth implement");
 }
 
 // ==========================
