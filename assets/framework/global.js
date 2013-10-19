@@ -65,8 +65,12 @@ var _Text = require('drawable/text.js');
 
 var mAtlas = new _Atlas(1024, 1024, 1);
 function createFont(path, size) {
+    var _timer = require('core/timer.js');
+    var tick = new _timer.TickTack();
     var f = new _Font(mAtlas, 'fonts/' + path + '.ttf', size);
+    tick.check('createFont:' + path);
     f.load('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~');
+    tick.check('loadFont:' + path);
     return f;
 }
 

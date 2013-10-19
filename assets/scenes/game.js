@@ -14,9 +14,11 @@ var Game = _scene.createScene(
         var _timer = require('core/timer.js');
 		var tick = new _timer.TickTack();
     	this.addChild(this.gamearea = new _GameArea(this));
+        tick.check('_GameArea.create');
         this.addChild(this.betpanel = new _BetPanel(this));
+        tick.check('_BetPanel.create');
         this.addChild(this.msgpanel = new _MessagePanel(this));
-        tick.check('game.create');
+        tick.check('_MessagePanel.create');
 
         this.querySelector('control>button').forEach(function (button) {
         	console.log('regist buttons', button);

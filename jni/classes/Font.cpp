@@ -32,18 +32,15 @@
 //long __maxoffset = 0;
 //long __maxread = 0;
 
-static unsigned long ft_zip_read(FT_Stream stream, unsigned long offset, unsigned char* buffer, unsigned long count)
-{
+static unsigned long ft_zip_read(FT_Stream stream, unsigned long offset, unsigned char* buffer, unsigned long count) {
     if(count == 0) {
         return 0;
     }
-    //LOGI("ft_zip_read:%d", count);
     FILE* file = static_cast<FILE*>(stream->descriptor.pointer);
     fseek(file, offset, SEEK_SET);
     return fread(buffer, 1, count, file);
 }
-static void ft_zip_close(FT_Stream stream)
-{
+static void ft_zip_close(FT_Stream stream) {
     FILE* file = static_cast<FILE*>(stream->descriptor.pointer);
     fclose(file);
 }
@@ -58,10 +55,10 @@ static FT_Error load_font_assets(FILE* file, FT_Library* library, FT_Long face_i
     fseek(file, 0, SEEK_END);
     long size = ftell(file);
     rewind(file);
-    
+
     FT_StreamDesc descriptor;
     descriptor.pointer = file;
-    
+
     FT_StreamRec* stream = new FT_StreamRec();
     stream->base = 0;
     stream->size = size;
@@ -69,7 +66,7 @@ static FT_Error load_font_assets(FILE* file, FT_Library* library, FT_Long face_i
     stream->descriptor = descriptor;
     stream->read = &ft_zip_read;
     stream->close = &ft_zip_close;
-    
+
     FT_Open_Args open_args;
     open_args.flags = FT_OPEN_STREAM;
     open_args.stream = stream;
@@ -78,17 +75,8 @@ static FT_Error load_font_assets(FILE* file, FT_Library* library, FT_Long face_i
     return e;
 }
 static FT_Error load_font_assets_from_file(FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
-//    __totalread = 0;
-//    __maxoffset = 0;
-//    __totaltimes = 0;
-//    __maxread = 0;
-//    LOGI("---------");
-
     FILE* file = AssetUtil::android_fopen(filename, "r");
     return load_font_assets(file, library, face_index, aface);
-
-//    LOGI("read size:%ld offset:%ld count:%d total:%d maxstride:%d", size, __maxoffset, __totalread, __totaltimes, __maxread);
-//    return e;
 }
 /**
  * @text
@@ -301,14 +289,17 @@ void Font::doRelease() {
     texture_font_delete(font);
     font = 0;
 }
+/**
+ * @mAtlas
+ * @font
+ * @size
+ */
 void Font::init(const v8::FunctionCallbackInfo<Value> &args) {
     TextureAtlas* atlas = internalArg<TextureAtlas>(args[0], CLASS_Atlas);
     String::Utf8Value path(args[1]->ToString());
     float depth = args[2]->NumberValue();
 
-    JSFile* file = JSFile::loadAsset(*path);
     font = texture_font_new_fn(atlas->atlas, *path, depth, load_font_assets_from_file);
-    delete file;
 
     mRelease = false;
 }

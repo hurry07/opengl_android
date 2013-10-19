@@ -27,7 +27,6 @@ game.render = {
 
         _gl.enable(_gl.BLEND);
         _gl.blendFunc(_gl.ONE, _gl.ONE_MINUS_SRC_ALPHA);
-        console.log('game.onSurfaceCreated');
 
         _gl.disable(_gl.DEPTH_TEST);
         _gl.disable(_gl.STENCIL_TEST);
@@ -49,7 +48,6 @@ game.render = {
         _global.updateContext.reset();
     },
     onSurfaceChanged: function (width, height) {
-        console.log('game.onSurfaceChanged', width, height);
         mCamera.lookAt([0, 0, 10], [0, 0, 0], [0, 1, 0]).ortho(0, width, 0, height, 9, 11);
         mRenderContext.onChange();
         mCamera.setViewport(width, height);
@@ -59,7 +57,7 @@ game.render = {
     },
     onDrawFrame: function () {
         _global.runSchedule();
-        //_framerate.update();
+        _framerate.update();
     }
 };
 function wrap(obj, name) {
