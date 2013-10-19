@@ -75,35 +75,35 @@ var mFontsDB = {}
 //mFontsDB['fat_20'] = createFont('fat', 20);
 
 function fontManager() {
-	function createFont(path, size) {
-	    var f = new _Font(this.mAtlas, 'fonts/' + path + '.ttf', size);
-	    f.load('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~');
-	    return f;
-	}
-	
-	function init() {
-	    mFontsDB['fat_40'] = this.createFont('fat', 40);
-	    mFontsDB['fat_20'] = this.createFont('fat', 20);
-	}
-	
-	function findFont(name, size) {
-	    return mFontsDB[name + '_' + size] || (  mFontsDB[name + '_' + size] = createFont(name, size));
-	}
-	
-	function textNode(font, size, text) {
-	    var pText = new _Text(_program.textBlack.material(mAtlas), findFont(font, size));
-	    if (text) {
-	        pText.setText(text);
-	    }
-	    return pText;
-	}
-	
-	return {
-	    'createFont': createFont,
-	    'init': init,
-	    'findFont': findFont,
-	    'textNode': textNode
-	};
+    function createFont(path, size) {
+        var f = new _Font(this.mAtlas, 'fonts/' + path + '.ttf', size);
+        f.load('!"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~');
+        return f;
+    }
+
+    function init() {
+        mFontsDB['fat_40'] = this.createFont('fat', 40);
+        mFontsDB['fat_20'] = this.createFont('fat', 20);
+    }
+
+    function findFont(name, size) {
+        return mFontsDB[name + '_' + size] || (  mFontsDB[name + '_' + size] = createFont(name, size));
+    }
+
+    function textNode(font, size, text) {
+        var pText = new _Text(_program.textBlack.material(mAtlas), findFont(font, size));
+        if (text) {
+            pText.setText(text);
+        }
+        return pText;
+    }
+
+    return {
+        'createFont': createFont,
+        'init': init,
+        'findFont': findFont,
+        'textNode': textNode
+    };
 }
 function findFont(name, size) {
     return mFontsDB[name + '_' + size] || (mFontsDB[name + '_' + size] = createFont(name, size));
@@ -189,7 +189,11 @@ exports.runSchedule = function () {
     touchContext.startTouch();
     var itor = scheduleEvent.iterator();
     while (itor.hasNext()) {
-        touchContext.onEvent(mCamera, itor.next());
+        try {
+            touchContext.onEvent(mCamera, itor.next());
+        } catch (e) {
+            console.error('touch.exception:' + e);
+        }
     }
     touchContext.endTouch();
 

@@ -14,15 +14,10 @@ function jsImplement() {
 var _file = clz.file || jsImplement();
 
 function loadContent(path) {
-	//console.log('loadContent-->01');
     var f = new _file();
-	//console.log('loadContent-->02');
     f.loadAsset(path);
-	//console.log('loadContent-->03');
     var s = f.getContent();
-	//console.log('loadContent-->04', s);
     f.release();
-	//console.log('loadContent-->05');
 
     return s;
 }

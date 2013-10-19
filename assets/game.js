@@ -39,8 +39,11 @@ game.render = {
         mCamera.viewport();
 
         if (firstInit) {
-			_global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
-            //_global.registerScene(require('scenes/game.js').newInstance('game', width, height));
+            //_global.registerScene(require('scenes/cover.js').newInstance('cover', width, height));
+            var _timer = require('core/timer.js');
+            var tick = new _timer.TickTack();
+            _global.registerScene(require('scenes/game.js').newInstance('game', width, height));
+            tick.check('registerScene');
             firstInit = false;
         }
         _global.updateContext.reset();
@@ -59,5 +62,18 @@ game.render = {
         //_framerate.update();
     }
 };
+function wrap(obj, name) {
+    var fn = obj[name];
+    obj[name] = function () {
+        try {
+            fn.apply(obj, arguments);
+        } catch (e) {
+            console.log(name + '.exception:' + e);
+        }
+    }
+}
+for (var i in game.render) {
+    wrap(game.render, i);
+}
 
 module.exports = game;

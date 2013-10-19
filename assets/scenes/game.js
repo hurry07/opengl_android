@@ -10,35 +10,32 @@ console.log('--->01');
 var Game = _scene.createScene(
     function (w, h) {
         this.setSize(w, h);
-    	var _timer = require('core/timer.js');
-    	var tick = new _timer.TickTack();
-        this.addChild(this.gamearea = new _GameArea(this));
-        tick.check('_GameArea');
+        
+        var _timer = require('core/timer.js');
+		var tick = new _timer.TickTack();
+    	this.addChild(this.gamearea = new _GameArea(this));
         this.addChild(this.betpanel = new _BetPanel(this));
-        tick.check('_BetPanel');
         this.addChild(this.msgpanel = new _MessagePanel(this));
-        tick.check('_MessagePanel');
+        tick.check('game.create');
 
-//        var buttons = this.querySelector('control>button');
-//        console.log('buttons:', buttons);
-//        this.querySelector('control>button').forEach(function (button) {
-//        	console.log('_scene.createScene 021');
-//            if (button.getId() == 'ok') {
-//                button.on('click', this.okClick, this);
-//            } else {
-//                button.on('click', this.autoClick, this);
-//            }
-//        }, this);
-//        console.log('_scene.createScene 03');
-//
-//        this.mCoins = this.querySelector('#coinsbar')[0];
+        this.querySelector('control>button').forEach(function (button) {
+        	console.log('regist buttons', button);
+            if (button.getId() == 'ok') {
+                button.on('click', this.okClick, this);
+            } else {
+                button.on('click', this.autoClick, this);
+            }
+        }, this);
+        tick.check('game.bindevent');
+
+        this.mCoins = this.querySelector('#coinsbar')[0];
 
 //        var text = _global.textNode('Georgia', 90, 'ABCDEabcde');
 //        var text = _global.textNode('Georgia', 30, 'ABCDEabcde');
 //        text.setPosition(50, 200);
 //        this.addChild(text);
-        console.log('_scene.createScene 04');
         this.onSizeChange(w, h);
+        tick.check('game.onSizeChange');
     }
 );
 /**

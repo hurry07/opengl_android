@@ -57,10 +57,22 @@ static void ExceptionToString(v8::TryCatch* try_catch) {
 	}
 }
 
+void ReportMessage(v8::Handle<v8::Message> message, v8::Handle<v8::Value> data) {
+    v8::String::Utf8Value filename(message->GetScriptResourceName());
+    int lineno = message->GetLineNumber();
+    v8::String::Utf8Value sourceline(message->GetSourceLine());
+
+    char s[512];
+    int len = sprintf(s, "file:%s, line:%d->%s", *filename, lineno, *sourceline);
+    std::string exp(s, len);
+    LOGI("Exception %s", exp.c_str());
+}
+
 Application::Application() {
     mWidth = 0;
     mHeight = 0;
 
+    //v8::V8::AddMessageListener(ReportMessage);
 	node_isolate = Isolate::New();
 	ENTER_ISOLATE;
 
