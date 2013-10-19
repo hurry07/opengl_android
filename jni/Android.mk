@@ -49,9 +49,10 @@ LOCAL_SRC_FILES := main.cpp \
 	utils/AssetUtil.cpp 
 
 LOCAL_SHARED_LIBRARIES := cocos_jpeg_static
-LOCAL_SHARED_LIBRARIES += cocos_libpng_static
+#LOCAL_SHARED_LIBRARIES := djpeg
 #LOCAL_SHARED_LIBRARIES += cocos_libwebp_static
 LOCAL_SHARED_LIBRARIES += cocos_curl_static
+LOCAL_SHARED_LIBRARIES += libpng
 LOCAL_SHARED_LIBRARIES += libft2
 LOCAL_SHARED_LIBRARIES += libfreetype_gl
 
@@ -63,9 +64,10 @@ include $(BUILD_SHARED_LIBRARY)
 
 $(call import-module,libcurl)
 $(call import-module,libjpeg)
-$(call import-module,libpng)
 #$(call import-module,libwebp)
 $(call import-module,platform_external_freetype)
+$(call import-module,platform_external_libpng)
+#$(call import-module,platform_external_jpeg)
 $(call import-module,freetype-gl-read-only)
 $(call import-module,libv8)
 $(call import-module,libglm)

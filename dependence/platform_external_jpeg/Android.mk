@@ -13,20 +13,20 @@ LOCAL_SRC_FILES := \
     jfdctint.c jidctflt.c jidctfst.c jidctint.c jidctred.c jquant1.c \
     jquant2.c jutils.c jmemmgr.c armv6_idct.S
 
-ifeq (,$(TARGET_BUILD_APPS))
-# building against master
-# use ashmem as libjpeg decoder's backing store
-LOCAL_CFLAGS += -DUSE_ANDROID_ASHMEM
-LOCAL_SRC_FILES += \
-    jmem-ashmem.c
-else
+#ifeq (,$(TARGET_BUILD_APPS))
+## building against master
+## use ashmem as libjpeg decoder's backing store
+#LOCAL_CFLAGS += -DUSE_ANDROID_ASHMEM
+#LOCAL_SRC_FILES += \
+#    jmem-ashmem.c
+#else
 # unbundled branch, built against NDK.
 LOCAL_SDK_VERSION := 17
 # the original android memory manager.
 # use sdcard as libjpeg decoder's backing store
 LOCAL_SRC_FILES += \
     jmem-android.c
-endif
+#endif
 
 LOCAL_CFLAGS += -DAVOID_TABLES
 LOCAL_CFLAGS += -O3 -fstrict-aliasing -fprefetch-loop-arrays
