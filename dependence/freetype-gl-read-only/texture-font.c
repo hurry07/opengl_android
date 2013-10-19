@@ -59,7 +59,7 @@ const struct {
 
 
 // ------------------------------------------------- texture_font_load_face ---
-FT_Error load_font_file (FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
+FT_Error load_font_file (texture_font_t* self, FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
     return FT_New_Face(*library, filename, face_index, aface);
 }
 
@@ -68,7 +68,8 @@ freetype_load_face_fn( FT_Library * library,
                         const char * filename,
                         const float size,
                         FT_Face * face,
-                        fn_face_load loadfn)
+                        fn_face_load loadfn,
+                        texture_font_t* self)
 {
     size_t hres = 64;
     FT_Error error;
@@ -91,7 +92,7 @@ freetype_load_face_fn( FT_Library * library,
 
     /* Load face */
     //error = FT_New_Face(*library, filename, 0, face);// <--------- changed
-    error = loadfn(library, filename, 0, face);
+    error = loadfn(self, library, filename, 0, face);
     
     if( error )
     {
@@ -131,14 +132,14 @@ freetype_load_face( FT_Library * library,
                        const char * filename,
                        const float size,
                        FT_Face * face) {
-    return freetype_load_face_fn(library, filename, size, face, load_font_file);
+    return freetype_load_face_fn(library, filename, size, face, load_font_file, 0);
 }
 
 int texture_font_load_face(texture_font_t* self,
                              FT_Library* library,
                              const float size,
                              FT_Face* aface) {
-    return freetype_load_face_fn(library, self->filename, size, aface, self->fontload);
+    return freetype_load_face_fn(library, self->filename, size, aface, self->fontload, self);
 }
 
 // ------------------------------------------------------ texture_glyph_new ---
@@ -253,7 +254,7 @@ texture_font_generate_kerning( texture_font_t *self )
 
 // ------------------------------------------------------- texture_font_new ---
 texture_font_t *
-texture_font_new_fn( texture_atlas_t * atlas,
+texture_font_new_fn(texture_atlas_t * atlas,
                     const char * filename,
                     const float size,
                     fn_face_load loader) {

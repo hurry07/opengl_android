@@ -12,6 +12,8 @@
 #include "../core/ClassBase.h"
 #include "freetype-gl.h"
 
+class JSFile;
+
 class Font : public ClassBase {
 public:
 	Font();
@@ -25,7 +27,7 @@ public:
 
 public:
     texture_font_t *font;
+    JSFile* jsfile;
 };
-
 
 #endif /* defined(__v8__Font__) */

@@ -50,7 +50,6 @@ static int android_write(void* cookie, const char* buf, int size) {
 	return EACCES; // can't provide write access to the apk
 }
 static fpos_t android_seek(void* cookie, fpos_t offset, int whence) {
-//	LOGE("android_seek %d", offset);
 	return AAsset_seek((AAsset*) cookie, offset, whence);
 }
 static int android_close(void* cookie) {

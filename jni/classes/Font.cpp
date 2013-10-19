@@ -51,6 +51,7 @@ static FT_Error load_font_assets_from_memory(FT_Library* library, const char* fi
     delete file;
     return e;
 }
+
 static FT_Error load_font_assets(FILE* file, FT_Library* library, FT_Long face_index, FT_Face* aface) {
     fseek(file, 0, SEEK_END);
     long size = ftell(file);
@@ -70,13 +71,21 @@ static FT_Error load_font_assets(FILE* file, FT_Library* library, FT_Long face_i
     FT_Open_Args open_args;
     open_args.flags = FT_OPEN_STREAM;
     open_args.stream = stream;
-    
+
     FT_Error e = FT_Open_Face(*library, &open_args, face_index, aface);
     return e;
 }
-static FT_Error load_font_assets_from_file(FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
-    FILE* file = AssetUtil::android_fopen(filename, "r");
-    return load_font_assets(file, library, face_index, aface);
+static FT_Error load_font_assets_from_file(texture_font_t* self, FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
+	FILE* file = AssetUtil::android_fopen(filename, "r");
+	return load_font_assets(file, library, face_index, aface);
+}
+static FT_Error load_font_assets_buffer(texture_font_t* self, FT_Library* library, const char* filename, FT_Long face_index, FT_Face* aface) {
+	if(self->buffer == 0) {
+		self->buffer = JSFile::loadAsset(filename);
+	}
+	JSFile* jsfile = static_cast<JSFile*>(self->buffer);
+	FILE* file = jsfile->fopen("r");
+	return load_font_assets(file, library, face_index, aface);
 }
 /**
  * @text
@@ -270,7 +279,7 @@ static v8::Local<v8::Function> initClass(v8::Handle<v8::FunctionTemplate>& temp)
     return scope.Close(temp->GetFunction());
 }
 
-Font::Font() : font(0) {
+Font::Font() : font(0), jsfile(0) {
 }
 Font::~Font() {
     release();
@@ -286,6 +295,11 @@ ClassType Font::getClassType() {
     return getExportStruct()->mType;
 }
 void Font::doRelease() {
+	if(font->buffer) {
+		JSFile* jsfile = static_cast<JSFile*>(font->buffer);
+		delete jsfile;
+		font->buffer = 0;
+	}
     texture_font_delete(font);
     font = 0;
 }
@@ -293,13 +307,22 @@ void Font::doRelease() {
  * @mAtlas
  * @font
  * @size
+ * @catch
  */
 void Font::init(const v8::FunctionCallbackInfo<Value> &args) {
     TextureAtlas* atlas = internalArg<TextureAtlas>(args[0], CLASS_Atlas);
     String::Utf8Value path(args[1]->ToString());
     float depth = args[2]->NumberValue();
+    bool usebuffer = false;
+    if(args.Length() > 3) {
+    	usebuffer = args[3]->BooleanValue();
+    }
 
-    font = texture_font_new_fn(atlas->atlas, *path, depth, load_font_assets_from_file);
+    if(usebuffer) {
+		font = texture_font_new_fn(atlas->atlas, *path, depth, load_font_assets_buffer);
+    } else {
+		font = texture_font_new_fn(atlas->atlas, *path, depth, load_font_assets_from_file);
+    }
 
     mRelease = false;
 }

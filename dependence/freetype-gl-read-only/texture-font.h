@@ -215,7 +215,8 @@ typedef struct
 
 typedef struct texture_font_t_body texture_font_t;
 typedef FT_Error (*fn_face_load) (
-    FT_Library* library,
+	texture_font_t* self,
+	FT_Library* library,
     const char* filename,
     FT_Long face_index,
     FT_Face* aface
@@ -249,11 +250,17 @@ struct texture_font_t_body
      * Font filename
      */
     char * filename;
-    
+
+    // ---------------------- change begin
     /**
      * load function
      */
     fn_face_load fontload;
+    /**
+     * cached data
+     */
+    void* buffer;
+    // ---------------------- change end
 
     /**
      * Font size
